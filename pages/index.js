@@ -1,5 +1,5 @@
-function Home() {
-  return <h1>Quer sair comigo? Se sim, da um sorriso para mim!</h1>;
-}
+import htmlContent from './formulaview.html?raw'; // Vite
+// ou
+// const htmlContent = require('./formulaview.html'); // Webpack com html-loader
 
-export default Home;
+document.body.innerHTML = htmlContent;

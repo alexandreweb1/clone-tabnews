@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Hub • A Comunidade da Velocidade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Teko:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --racing-red: #E10600;
+            --speed-black: #15151E;
+            --track-gray: #38383F;
+            --podium-gold: #FFD700;
+            --asphalt: #1A1A24;
+            --carbon-fiber: #2A2A35;
+            --pit-white: #F5F5F7;
+            --flag-checker: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--speed-black);
+            color: var(--pit-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .racing-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .racing-lines::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                transparent 48%, 
+                var(--racing-red) 49%, 
+                var(--racing-red) 51%, 
+                transparent 52%,
+                transparent 100%);
+            animation: speedLine 4s linear infinite;
+            opacity: 0.05;
+        }
+
+        @keyframes speedLine {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(21, 21, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--racing-red);
+            z-index: 1000;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Teko', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--racing-red);
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--racing-red);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover::after {
+            transform: scaleX(1);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--pit-white);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--racing-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--racing-red);
+        }
+
+        .nav-menu a:hover::before {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            margin-top: 80px;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--asphalt) 0%, var(--speed-black) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1200px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Teko', sans-serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--racing-red) 0%, var(--podium-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: heroTitle 1s ease-out;
+        }
+
+        @keyframes heroTitle {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .hero p {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: var(--racing-red);
+            color: white;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.6s forwards;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Stats Section */
+        .stats {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: -50px auto 0;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--carbon-fiber) 0%, var(--track-gray) 100%);
+            padding: 2rem;
+            border-left: 4px solid var(--racing-red);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.2s; }
+        .stat-card:nth-child(2) { animation-delay: 0.4s; }
+        .stat-card:nth-child(3) { animation-delay: 0.6s; }
+        .stat-card:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: var(--racing-red);
+            opacity: 0.1;
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+        }
+
+        .stat-number {
+            font-family: 'Teko', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--racing-red);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--pit-white);
+            margin-top: 0.5rem;
+        }
+
+        /* Content Section */
+        .content-section {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: 'Teko', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--racing-red);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background: var(--racing-red);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .content-card {
+            background: var(--carbon-fiber);
+            border: 1px solid var(--track-gray);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--racing-red);
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--racing-red), var(--podium-gold));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .content-card h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--pit-white);
+            margin-bottom: 1rem;
+        }
+
+        .content-card p {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            color: #B8B8C0;
+            line-height: 1.8;
+        }
+
+        /* Forum Section */
+        .forum-section {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .forum-container {
+            background: var(--asphalt);
+            border: 2px solid var(--track-gray);
+            padding: 3rem;
+            margin-top: 2rem;
+        }
+
+        .new-topic-form {
+            background: var(--carbon-fiber);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--racing-red);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--pit-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--speed-black);
+            border: 1px solid var(--track-gray);
+            color: var(--pit-white);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--racing-red);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            padding: 1rem 2.5rem;
+            background: var(--racing-red);
+            color: white;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            background: #C00500;
+        }
+
+        .forum-topics {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .topic-item {
+            background: var(--carbon-fiber);
+            padding: 1.5rem;
+            border-left: 3px solid var(--track-gray);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .topic-item:hover {
+            border-left-color: var(--racing-red);
+            transform: translateX(5px);
+        }
+
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .topic-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--pit-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-meta {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .topic-content {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            color: #B8B8C0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .topic-stats {
+            display: flex;
+            gap: 2rem;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .topic-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .topic-stats span::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--racing-red);
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            background: var(--asphalt);
+            border-top: 3px solid var(--racing-red);
+            padding: 3rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--racing-red);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-section a {
+            color: #B8B8C0;
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--racing-red);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--track-gray);
+            text-align: center;
+            font-family: 'Rajdhani', sans-serif;
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                margin-top: 2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .forum-container {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="racing-lines"></div>
+
+    <header>
+        <nav>
+            <div class="logo">F1 HUB</div>
+            <ul class="nav-menu">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#conteudo">Conteúdo</a></li>
+                <li><a href="#forum">Fórum</a></li>
+                <li><a href="#equipes">Equipes</a></li>
+                <li><a href="#calendario">Calendário</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>A VELOCIDADE<br>ENCONTRA A PAIXÃO</h1>
+            <p>Junte-se à maior comunidade de Fórmula 1 do Brasil</p>
+            <a href="#forum" class="cta-button">Entrar no Fórum</a>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat-card">
+            <div class="stat-number">24</div>
+            <div class="stat-label">Corridas por Temporada</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">10</div>
+            <div class="stat-label">Equipes Competindo</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">20</div>
+            <div class="stat-label">Pilotos na Grade</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">350+</div>
+            <div class="stat-label">km/h Velocidade Máxima</div>
+        </div>
+    </section>
+
+    <section id="sobre" class="content-section">
+        <h2 class="section-title">Bem-vindo ao Mundo da F1</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>História & Legado</h3>
+                <p>Desde 1950, a Fórmula 1 representa o ápice do automobilismo mundial. Décadas de evolução tecnológica, pilotos lendários e momentos inesquecíveis moldaram o esporte mais emocionante do planeta.</p>
+            </div>
+            <div class="content-card">
+                <h3>Tecnologia de Ponta</h3>
+                <p>Motores híbridos desenvolvendo mais de 1000 cavalos de potência, sistemas de recuperação de energia, aerodinâmica computacional e materiais de última geração fazem dos carros de F1 verdadeiras obras-primas da engenharia.</p>
+            </div>
+            <div class="content-card">
+                <h3>Competição Global</h3>
+                <p>Com corridas em cinco continentes, a F1 leva a emoção das pistas para milhões de fãs ao redor do mundo. De Mônaco a Interlagos, cada circuito oferece desafios únicos e momentos inesquecíveis.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="conteudo" class="content-section">
+        <h2 class="section-title">Conteúdo Exclusivo</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>Análises Técnicas</h3>
+                <p>Mergulhe profundamente na engenharia por trás dos carros mais rápidos do mundo. Entenda como cada componente contribui para o desempenho nas pistas e como as equipes buscam vantagens competitivas.</p>
+            </div>
+            <div class="content-card">
+                <h3>Notícias & Atualizações</h3>
+                <p>Fique por dentro de tudo que acontece no paddock. Transferências de pilotos, desenvolvimentos técnicos, mudanças regulatórias e bastidores das equipes em primeira mão.</p>
+            </div>
+            <div class="content-card">
+                <h3>Estatísticas & Recordes</h3>
+                <p>Explore dados históricos, estatísticas de corridas, comparações entre pilotos e equipes. Números que contam a história do esporte através das décadas.</p>
+            </div>
+            <div class="content-card">
+                <h3>Guias para Iniciantes</h3>
+                <p>Novo no mundo da F1? Aprenda sobre regras, pontuação, estratégias de corrida, diferenças entre pneus e tudo que você precisa para se tornar um expert no assunto.</p>
+            </div>
+            <div class="content-card">
+                <h3>Entrevistas & Bastidores</h3>
+                <p>Acesso exclusivo a conversas com pilotos, engenheiros e membros das equipes. Descubra histórias não contadas e perspectivas únicas do mundo da Fórmula 1.</p>
+            </div>
+            <div class="content-card">
+                <h3>Cobertura ao Vivo</h3>
+                <p>Acompanhe cada sessão de treinos, qualificações e corridas com análises em tempo real, comentários especializados e debates acalorados com outros fãs.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="forum" class="forum-section">
+        <h2 class="section-title">Fórum da Comunidade</h2>
+        
+        <div class="forum-container">
+            <div class="new-topic-form">
+                <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--racing-red);">Criar Novo Tópico</h3>
+                <form id="topicForm">
+                    <div class="form-group">
+                        <label for="userName">Seu Nome</label>
+                        <input type="text" id="userName" required placeholder="Digite seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="topicTitle">Título do Tópico</label>
+                        <input type="text" id="topicTitle" required placeholder="Ex: Quem vai vencer o próximo GP?">
+                    </div>
+                    <div class="form-group">
+                        <label for="topicContent">Conteúdo</label>
+                        <textarea id="topicContent" required placeholder="Compartilhe sua opinião, análise ou pergunta..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Publicar Tópico</button>
+                </form>
+            </div>
+
+            <h3 style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2rem; color: var(--pit-white);">Discussões Recentes</h3>
+            
+            <div class="forum-topics" id="forumTopics">
+                <div class="topic-item">
+                    <div class="topic-header">
+                        <div>
+                            <div class="topic-title">Regulamento 2026: O que esperar?</div>
+                            <div class="topic-meta">Por Carlos Silva • Há 2 horas</div>
+                        </div>
+                    </div>
+                    <div class="topic-content">
+                        Com as mudanças significativas nos regulamentos para 2026, incluindo novos motores e aerodinâmica, como vocês acham que isso vai afetar a competitividade entre as equipes? A Red Bull vai manter a dominância?
+                    </div>
+                    <div class="topic-stats">
+                        <span>15 Respostas</span>
+                        <span>127 Visualizações</span>
+                    </div>
+                </div>
+
+                <div class="topic-item">
+                    <div class="topic-header">
+                        <div>
+                            <div class="topic-title">Análise: Estratégia de pneus no GP do Brasil</div>
+                            <div class="topic-meta">Por Marina Costa • Há 5 horas</div>
+                        </div>
+                    </div>
+                    <div class="topic-content">
+                        A estratégia de duas paradas da Mercedes no último GP foi brilhante! Alguém mais notou como eles ganharam tempo crucial no segundo stint com os médios? Vamos analisar os dados de telemetria...
+                    </div>
+                    <div class="topic-stats">
+                        <span>23 Respostas</span>
+                        <span>304 Visualizações</span>
+                    </div>
+                </div>
+
+                <div class="topic-item">
+                    <div class="topic-header">
+                        <div>
+                            <div class="topic-title">Qual o melhor piloto da era turbo-híbrida?</div>
+                            <div class="topic-meta">Por Rafael Mendes • Há 1 dia</div>
+                        </div>
+                    </div>
+                    <div class="topic-content">
+                        Debate clássico: entre Hamilton, Verstappen e todos os outros que competiram desde 2014, quem vocês consideram o melhor? Vamos considerar não só títulos, mas também desempenho puro e adaptabilidade.
+                    </div>
+                    <div class="topic-stats">
+                        <span>89 Respostas</span>
+                        <span>1.2k Visualizações</span>
+                    </div>
+                </div>
+
+                <div class="topic-item">
+                    <div class="topic-header">
+                        <div>
+                            <div class="topic-title">Interlagos 2024: Previsões e expectativas</div>
+                            <div class="topic-meta">Por Juliana Santos • Há 2 dias</div>
+                        </div>
+                    </div>
+                    <div class="topic-content">
+                        Faltam poucas semanas para a corrida em casa! Quais são suas previsões? Clima pode ser fator decisivo? Como está o asfalto renovado? Discutam!
+                    </div>
+                    <div class="topic-stats">
+                        <span>42 Respostas</span>
+                        <span>856 Visualizações</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>F1 Hub</h3>
+                <p style="font-family: 'Rajdhani', sans-serif; color: #B8B8C0; line-height: 1.8;">
+                    A comunidade definitiva para entusiastas de Fórmula 1. Discussões, análises e paixão pelo esporte a motor.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Navegação</h3>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#conteudo">Conteúdo</a></li>
+                    <li><a href="#forum">Fórum</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Recursos</h3>
+                <ul>
+                    <li><a href="#equipes">Equipes</a></li>
+                    <li><a href="#calendario">Calendário</a></li>
+                    <li><a href="#">Estatísticas</a></li>
+                    <li><a href="#">Regras</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Comunidade</h3>
+                <ul>
+                    <li><a href="#forum">Fórum</a></li>
+                    <li><a href="#">Eventos</a></li>
+                    <li><a href="#">Newsletter</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 F1 Hub • Comunidade de Fãs de Fórmula 1 • Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <script>
+        // Forum functionality
+        document.getElementById('topicForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userName = document.getElementById('userName').value;
+            const topicTitle = document.getElementById('topicTitle').value;
+            const topicContent = document.getElementById('topicContent').value;
+            
+            const topicItem = document.createElement('div');
+            topicItem.className = 'topic-item';
+            topicItem.style.animation = 'slideUp 0.5s ease-out';
+            
+            topicItem.innerHTML = `
+                <div class="topic-header">
+                    <div>
+                        <div class="topic-title">${topicTitle}</div>
+                        <div class="topic-meta">Por ${userName} • Agora mesmo</div>
+                    </div>
+                </div>
+                <div class="topic-content">${topicContent}</div>
+                <div class="topic-stats">
+                    <span>0 Respostas</span>
+                    <span>1 Visualização</span>
+                </div>
+            `;
+            
+            const forumTopics = document.getElementById('forumTopics');
+            forumTopics.insertBefore(topicItem, forumTopics.firstChild);
+            
+            // Clear form
+            document.getElementById('userName').value = '';
+            document.getElementById('topicTitle').value = '';
+            document.getElementById('topicContent').value = '';
+            
+            // Scroll to new topic
+            topicItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        // Add hover effects to topic items
+        document.querySelectorAll('.topic-item').forEach(item => {
+            item.addEventListener('click', function() {
+                alert('Funcionalidade de visualização de tópico completo será implementada!');
+            });
+        });
+    </script>
+</body>
+</html>
